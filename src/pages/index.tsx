@@ -88,6 +88,7 @@ const MainDashboard: FC<IMainDashboard> = ({ value, unit, viderSrc }) => {
       <main>
         <div style={{ position: 'relative', minHeight: dashboardVideoHeight }}>
           <video
+            playsInline
             onCanPlay={onCanPlay}
             autoPlay
             loop

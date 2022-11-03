@@ -11,6 +11,28 @@ import {
   useState,
 } from 'react';
 
+type VoidFunction = () => void;
+const useInterval = (callback: VoidFunction, delay: number) => {
+  const savedCallback = useRef<null | VoidFunction>(null);
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    const tick = () => {
+      if (savedCallback.current) savedCallback.current();
+    };
+    if (delay !== null) {
+      const id = setInterval(tick, delay);
+      return () => {
+        clearInterval(id);
+      };
+    }
+    return undefined;
+  }, [delay]);
+};
+
 interface IData {
   type: number | string;
   height?: string;
@@ -53,6 +75,7 @@ const MainDashboard: FC<IMainDashboard> = ({ value, unit, viderSrc }) => {
       (prev) =>
         prev + Math.floor(value / Math.floor(Math.random() * 100 + 1000)),
     );
+    return undefined;
   }, 1);
 
   return (
@@ -76,7 +99,7 @@ const MainDashboard: FC<IMainDashboard> = ({ value, unit, viderSrc }) => {
               top: 0,
             }}
           >
-            <source src={MainVideoSrc} type="video/mp4" />
+            <source src={viderSrc} type="video/mp4" />
             <div>123123123</div>
           </video>
           <div style={{ padding: '0 24px' }}>
@@ -213,30 +236,12 @@ const InitialComponent = () => (
   </div>
 );
 
-const useInterval = (callback: Function, delay: number) => {
-  const savedCallback = useRef<null | Function>(null);
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    const tick = () => {
-      if (savedCallback.current) savedCallback.current();
-    };
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-};
-
 const myAxios = {
   get: async (url: string) => {
     const result = await axios.post('/api/GET', { url });
     return result;
   },
-  post: async (url: string, postData: any) => {
+  post: async (url: string, postData: unknown) => {
     const result = await axios.post('/api/POST', { url, data: postData });
     return result;
   },
@@ -276,7 +281,7 @@ const Home: NextPage = () => {
 
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   useEffect(() => {
-    if (isLoadingMainData || isLoading) return;
+    if (isLoadingMainData || isLoading) return undefined;
     const timeout = setTimeout(() => {
       setIsInitialLoading(false);
     }, 1000);
@@ -296,7 +301,6 @@ const Home: NextPage = () => {
         <div>Error!!!</div>
       </AnimatePresence>
     );
-  console.log({ rows: data?.rows });
   return (
     <AnimatePresence mode="wait" key="main-page">
       <MainDashboard

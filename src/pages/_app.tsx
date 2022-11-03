@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { useRef } from 'react';
+import Head from 'next/head';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const queryClientRef = useRef<QueryClient>();
@@ -14,12 +15,19 @@ const App = ({ Component, pageProps }: AppProps) => {
   }
 
   return (
-    <QueryClientProvider client={queryClientRef.current}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <Component {...pageProps} />
-        <ReactQueryDevtools />
-      </Hydrate>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <title>Kakao Mobility Clone</title>
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+
+      <QueryClientProvider client={queryClientRef.current}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </Hydrate>
+      </QueryClientProvider>
+    </>
   );
 };
 

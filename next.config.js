@@ -1,7 +1,27 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-}
+/* eslint-disable @typescript-eslint/no-var-requires */
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
-module.exports = nextConfig
+const nextConfig = {
+  reactStrictMode: false,
+  swcMinify: true,
+  i18n: {
+    locales: ['en', 'ko'],
+    defaultLocale: 'ko',
+  },
+  compress: true,
+  productionBrowserSourceMaps: false,
+};
+
+module.exports = withBundleAnalyzer({
+  ...nextConfig,
+  webpack(config) {
+    const prod = process.env.NODE_ENV === 'production';
+    return {
+      ...config,
+      mode: prod ? 'production' : 'development',
+      devtool: prod ? 'hidden-source-map' : 'eval-source-map',
+    };
+  },
+});

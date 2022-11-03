@@ -120,7 +120,7 @@ const MainDashboard: FC<IMainDashboard> = ({ value, unit, viderSrc }) => {
                 life
               </div>
             </div>
-            <div style={{ position: 'absolute', bottom: '105px' }}>
+            <div style={{ position: 'absolute', bottom: '64px' }}>
               <div>오늘 하루의 누적 이동거리</div>
               <div style={{ display: 'flex', alignItems: 'baseline' }}>
                 <div style={{ fontSize: '40px', fontWeight: 'bold' }}>
@@ -128,16 +128,20 @@ const MainDashboard: FC<IMainDashboard> = ({ value, unit, viderSrc }) => {
                 </div>
                 <div style={{ fontSize: '22px' }}>{unit}</div>
               </div>
+              <div style={{ fontSize: '22px', marginTop: '24px' }}>
+                우리의 기술로 생활을 움직입니다.
+              </div>
             </div>
-            <div
+            {/* <div
               style={{
                 fontSize: '22px',
                 position: 'absolute',
+                bottom: 0,
                 marginTop: '320px',
               }}
             >
               우리의 기술로 생활을 움직입니다.
-            </div>
+            </div> */}
           </div>
         </div>
       </main>
